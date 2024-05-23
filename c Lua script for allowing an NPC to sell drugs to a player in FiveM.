@@ -1,0 +1,28 @@
+-- Define the drug prices
+local drugPrices = {
+    cocaine = 200,
+    marijuana = 100,
+    meth = 150
+}
+
+-- Register an event handler for when a player interacts with the NPC
+RegisterNetEvent('buyDrugs')
+AddEventHandler('buyDrugs', function(drug)
+    local player = source
+    local price = drugPrices[drug]
+
+    -- Check if the drug exists and the player has enough money
+    if price and price > 0 then
+        if ESX.GetPlayerData(player).money >= price then
+            -- Sell the drug to the player and deduct money
+            TriggerClientEvent('esx:showNotification', player, 'You bought ' .. drug .. ' for $' .. price)
+            -- Add code here to give the player the drug item
+            TriggerEvent('esx:addInventoryItem', 'item_' .. drug, 1)
+            TriggerEvent('esx:removeMoney', player, price)
+        else
+            TriggerClientEvent('esx:showNotification', player, 'You don\'t have enough money to buy ' .. drug)
+        end
+    else
+        TriggerClientEvent('esx:showNotification', player, 'Invalid drug')
+    end
+end)
