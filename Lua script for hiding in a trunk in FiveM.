@@ -1,0 +1,20 @@
+local playerPed = PlayerPedId()
+local vehicle = GetVehiclePedIsIn(playerPed, false)
+
+-- Check if the player is near a vehicle and it's a trunk
+if IsPedNearAnyVehicle(playerPed, 5.0) then
+    local vehicleModel = GetEntityModel(vehicle)
+    local vehicleClass = GetVehicleClass(vehicle)
+
+    -- Check if the vehicle is a sedan (class 0) and the trunk is closed
+    if vehicleClass == 0 and GetVehicleDoorAngleRatio(vehicle, 5) == 0.0 then
+        -- Put the player in the trunk
+        TaskWarpPedIntoVehicle(playerPed, vehicle, 5)
+        SetEntityVisible(playerPed, false) -- Hide the player
+        SetEntityCollision(playerPed, false, false) -- Disable player collision
+    else
+        print("You can't hide in this trunk.")
+    end
+else
+    print("You need to be near a sedan with a closed trunk to hide.")
+end
