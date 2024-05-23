@@ -1,0 +1,14 @@
+-- Register an event handler for when a player slashes tires
+RegisterCommand('slashtires', function(source, args, rawCommand)
+    local targetVehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+    local tireIndex = tonumber(args[1]) or 0
+
+    -- Check if the player is in a vehicle and the target tire index is valid
+    if IsPedInAnyVehicle(GetPlayerPed(-1), false) and tireIndex >= 0 and tireIndex <= 7 then
+        -- Slash the specified tire
+        SetVehicleTyreBurst(targetVehicle, tireIndex, true, 1000.0)
+        print("Tire slashed.")
+    else
+        print("Invalid usage. Type /slashtires [0-7] to slash a tire.")
+    end
+end, false)
